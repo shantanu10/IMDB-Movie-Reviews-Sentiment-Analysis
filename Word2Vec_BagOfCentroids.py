@@ -1,18 +1,3 @@
-#!/usr/bin/env python
-
-#  Author: Angela Chapman
-#  Date: 8/6/2014
-#
-#  This file contains code to accompany the Kaggle tutorial
-#  "Deep learning goes to the movies".  The code in this file
-#  is for Part 2 of the tutorial and covers Bag of Centroids
-#  for a Word2Vec model. This code assumes that you have already
-#  run Word2Vec and saved a model called "300features_40minwords_10context"
-#
-# *************************************** #
-
-
-# Load a pre-trained model
 from gensim.models import Word2Vec
 from sklearn.cluster import KMeans
 import time
@@ -25,26 +10,17 @@ import numpy as np
 import os
 from KaggleWord2VecUtility import KaggleWord2VecUtility
 
-
-# Define a function to create bags of centroids
-#
+#Function for creating bag of centroids
 def create_bag_of_centroids( wordlist, word_centroid_map ):
-    #
-    # The number of clusters is equal to the highest cluster index
-    # in the word / centroid map
+    
     num_centroids = max( word_centroid_map.values() ) + 1
-    #
-    # Pre-allocate the bag of centroids vector (for speed)
     bag_of_centroids = np.zeros( num_centroids, dtype="float32" )
-    #
-    # Loop over the words in the review. If the word is in the vocabulary,
-    # find which cluster it belongs to, and increment that cluster count
-    # by one
+ 
     for word in wordlist:
         if word in word_centroid_map:
             index = word_centroid_map[word]
             bag_of_centroids[index] += 1
-    #
+  
     # Return the "bag of centroids"
     return bag_of_centroids
 
@@ -54,10 +30,8 @@ if __name__ == '__main__':
     model = Word2Vec.load("300features_40minwords_10context")
 
 
-    # ****** Run k-means on the word vectors and print a few clusters
-    #
-
-    start = time.time() # Start time
+    # ****** Run k-means on the word vectors and print a few cluster
+     start = time.time() # Start time
 
     # Set "k" (num_clusters) to be 1/5th of the vocabulary size, or an
     # average of 5 words per cluster
@@ -96,8 +70,6 @@ if __name__ == '__main__':
 
 
     # Create clean_train_reviews and clean_test_reviews as we did before
-    #
-
     # Read data from files
     train = pd.read_csv( os.path.join(os.path.dirname(__file__), 'data', 'labeledTrainData.tsv'), header=0, delimiter="\t", quoting=3 )
     test = pd.read_csv(os.path.join(os.path.dirname(__file__), 'data', 'testData.tsv'), header=0, delimiter="\t", quoting=3 )
@@ -116,8 +88,7 @@ if __name__ == '__main__':
             remove_stopwords=True ))
 
 
-    # ****** Create bags of centroids
-    #
+    # ****** Create bags of centroid
     # Pre-allocate an array for the training set bags of centroids (for speed)
     train_centroids = np.zeros( (train["review"].size, num_clusters), \
         dtype="float32" )
@@ -140,8 +111,7 @@ if __name__ == '__main__':
         counter += 1
 
 
-    # ****** Fit a random forest and extract predictions
-    #
+    # ****** Fit a random forest and extract prediction
     forest = RandomForestClassifier(n_estimators = 100)
 
     # Fitting the forest may take a few minutes

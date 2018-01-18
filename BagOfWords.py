@@ -44,10 +44,7 @@ if __name__ == '__main__':
                              stop_words = None,   \
                              max_features = 5000)
 
-    # fit_transform() does two functions: First, it fits the model
-    # and learns the vocabulary; second, it transforms our training data
-    # into feature vectors. The input to fit_transform should be a list of
-    # strings.
+    
     train_data_features = vectorizer.fit_transform(clean_train_reviews)
 
     # Numpy arrays are easy to work with, so convert the result to an
@@ -55,17 +52,12 @@ if __name__ == '__main__':
     np.asarray(train_data_features)
 
     # ******* Train a random forest using the bag of words
-    #
     print ("Training the random forest (this may take a while)...")
 
 
     # Initialize a Random Forest classifier with 100 trees
     forest = RandomForestClassifier(n_estimators = 100)
-
-    # Fit the forest to the training set, using the bag of words as
-    # features and the sentiment labels as the response variable
-    #
-    # This may take a few minutes to run
+    
     forest = forest.fit( train_data_features, train["sentiment"] )
 
 
